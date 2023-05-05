@@ -2,6 +2,8 @@ name: Build and Push Docker Image
 
 on:
   push:
+    paths:
+      - 'docker/*'
     branches:
       - main
 
@@ -31,7 +33,7 @@ jobs:
         run: |
           docker build \
           -t ghcr.io/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}:${{ github.sha }} \
-          -t ghcr.io/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}:latest .
+          -t ghcr.io/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}:latest . -f docker/Dockerfile
 
       - name: Push Docker image
         run: |
