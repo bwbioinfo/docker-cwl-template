@@ -6,7 +6,9 @@ on:
       - 'docker/*'
     branches:
       - main
-
+      - dev
+    paths-ignore:
+      - '.github/workflows/*'
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
