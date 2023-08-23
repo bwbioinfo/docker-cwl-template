@@ -57,7 +57,7 @@ If you wish to contribute to this project, please follow the standard GitHub wor
 
 ## License
 
-This project is licensed under the [MIT License](https://github.com/Nihasa/tool-docker-cwl/blob/main/LICENSE).
+This project is licensed under the [MIT License](https://github.com/bwbioinfo/tool-docker-cwl/blob/main/LICENSE).
 
 ## Contact
 
