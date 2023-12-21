@@ -1,0 +1,49 @@
+name: Test CWL
+
+on:
+  push:
+    paths:
+      - "tools/*.cwl"
+      - "tests/*.cwl"
+  pull_request:
+  workflow_dispatch:
+jobs:
+  list-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - name: List Files
+      id: list-tests
+      uses: bwbioinfo/list-files-action@main
+      with:
+        test-file-directory: tests
+        inputs-file-extension: yml
+        test-file-extension: cwl
+    outputs:
+      list-matrix: ${{ steps.list-tests.outputs.tests-matrix }}
+  test-cwl:
+    needs: list-tests
+    strategy:
+        matrix:
+          os: [ubuntu-latest, macos-latest]
+          tests: ${{ fromJson(needs.list-tests.outputs.list-matrix) }}
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Run CWL Tests
+      uses: bwbioinfo/docker-cwl-action@main
+      with:
+        test-file: ${{ matrix.tests[0] }}
+        inputs-file: ${{ matrix.tests[1] }}
+  test-cwl-singularity:
+    needs: list-tests
+    strategy:
+        matrix:
+          tests: ${{ fromJson(needs.list-tests.outputs.list-matrix) }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Test Singularity
+      uses: bwbioinfo/singularity-cwl-action@main
+      with:
+        test-file: ${{ matrix.tests[0] }}
+        inputs-file: ${{ matrix.tests[1] }}
