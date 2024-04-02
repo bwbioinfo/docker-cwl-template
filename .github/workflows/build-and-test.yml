@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: get-name
         run: |
           echo "REPO_NAME=$(basename ${{ github.repository }})" >> $GITHUB_ENV
@@ -22,7 +22,7 @@ jobs:
           docker build \
           -t ghcr.io/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}:latest --output type=tar,dest=/tmp/${{ env.REPO_NAME }}.tar . -f docker/Dockerfile
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.REPO_NAME }}
           path: /tmp/${{ env.REPO_NAME }}.tar
@@ -31,13 +31,13 @@ jobs:
     needs: build
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: get-name
         run: |
           echo "REPO_NAME=$(basename ${{ github.repository }})" >> $GITHUB_ENV
           echo "REPO_OWNER=$(echo ${{ github.repository_owner}} | tr '[:upper:]' '[:lower:]' )" >> $GITHUB_ENV
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{ env.REPO_NAME }}
           path: /tmp/
